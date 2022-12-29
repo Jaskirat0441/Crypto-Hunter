@@ -26,6 +26,7 @@ a {
 h1 {
   text-align: center;
   margin: 1rem;
+  cursor: pointer;
 }
 
 code {

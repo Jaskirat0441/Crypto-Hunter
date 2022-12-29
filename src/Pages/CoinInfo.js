@@ -3,10 +3,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./CoinInfo.css";
 import DOMPurify from 'dompurify'
+import { CryptoState } from "../Context/CryptoContext";
 
 
 const CoinInfo = () => {
   const [coinInfo, setCoinInfo] = useState({});
+  const [loading, setLoading] = useState(false);
+  const{currency,symbol}= CryptoState();
+
 
   const params = useParams();
 
@@ -16,15 +20,28 @@ const CoinInfo = () => {
     axios
       .get(url)
       .then((res) => {
+        setLoading(true);
         setCoinInfo(res.data);
+        setLoading(false);
+        console.log(res.data)
+
       })
       .catch((err) => {
         console.log(err);
+        setLoading(true);
+
       });
   }, []);
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <div>
+       {loading ? (
+            <div className="loader"></div>
+          ) : (
       <div className="coin-container">
         <div className="content">
           <h1>{coinInfo.name}</h1>
@@ -42,7 +59,7 @@ const CoinInfo = () => {
             <div className="coin-price">
               {coinInfo.market_data?.current_price ? (
                 <h1>
-                  ${coinInfo.market_data.current_price.usd.toLocaleString()}
+                  {symbol}{coinInfo.market_data.current_price.usd.toLocaleString()}
                 </h1>
               ) : null}
             </div>
@@ -137,21 +154,25 @@ const CoinInfo = () => {
           <div className="left-stats">
             <div className="row">
               <h4>24 Hour Low</h4>
-              {/* <p>{coinInfo.market_data.low_24h.usd}</p> */}
+              {coinInfo.market_data?.low_24h ? <p>{symbol}{coinInfo.market_data.low_24h.usd.toLocaleString()}</p> : null}
+
             </div>
              <div className="row">
               <h4>24 Hour Hight</h4>
-              {/* <p>{coinInfo.market_data.high_24h.usd}</p> */}
+              {coinInfo.market_data?.high_24h ? <p>{symbol}{coinInfo.market_data.high_24h.usd.toLocaleString()}</p> : null}                            
+
             </div>
               </div>
                <div className="right-stats">
             <div className="row">
               <h4>Market Cap</h4>
-              {/* <p>{coinInfo.market_data.market_cap.usd}</p> */}  
+              {coinInfo.market_data?.market_cap ? <p>{symbol}{numberWithCommas(coinInfo.market_data.market_cap.usd.toLocaleString())}M</p> : null}
+ 
             </div>
              <div className="row">
               <h4>Circulating Supply</h4>
-              {/* <p>{coinInfo.market_data.circulating_supply}</p> */}
+              {coinInfo.market_data ? <p>{coinInfo.market_data.circulating_supply}</p> : null}
+
             </div>
               </div>
           </div>
@@ -164,7 +185,7 @@ const CoinInfo = () => {
                         }}></p>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };

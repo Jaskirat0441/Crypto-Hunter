@@ -1,12 +1,21 @@
 .navbar{
     display: flex;
+    justify-content:space-between;
+    align-items: center;
+    padding: 0 3rem 0 3rem;
+    border-bottom: 4px solid #505050;
+
+    
+}
+.navbar-heading{
+    display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
 }
 .icon{
-     font-size: 2rem;
-     color: #6900ff;
+    font-size: 2rem;
+    color: #6900ff;
+    cursor: pointer;
 }
 .purple{
     color: #6900ff;
