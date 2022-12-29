@@ -8,7 +8,7 @@ const CoinItem = (props) => {
   const navigate = useNavigate();
 
   return (
-    <div className='coin-row' onClick={()=>navigate(`/coin/${props.coins.id}`)} element={<CoinInfo/>}>
+    <div className='coin-row' onClick={()=>navigate(`/coins/${props.coins.id}`)} element={<CoinInfo/>}>
         <p>{props.coins.market_cap_rank}</p>
         <div className="img-symbol">
             <img src={props.coins.image} alt="" />

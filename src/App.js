@@ -14,7 +14,7 @@ function App() {
   useEffect(()=>{
     axios.get(url).then((res)=>{
       setCoins(res.data);
-      // console.log(res.data);
+      console.log(res.data);
 
     }).catch((err)=>{
       console.log(err);
@@ -26,8 +26,8 @@ function App() {
    <Navbar/>
    <Routes>
     <Route path="/" element={ <CoinsTable coins={coins}/>}/>
-    <Route path="/coin/" element={ <CoinInfo/>}/>
-    <Route path=":coinId" element={  <CoinInfo/>}/>
+    {/* <Route path="/coin/" element={ <CoinInfo/>}/> */}
+    <Route path="/coins/:coinId" element={  <CoinInfo/>}/>
    </Routes>
    </>
   );
