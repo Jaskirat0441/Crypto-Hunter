@@ -59,7 +59,7 @@ const CoinInfo = () => {
             <div className="coin-price">
               {coinInfo.market_data?.current_price ? (
                 <h1>
-                  {symbol}{coinInfo.market_data.current_price.usd.toLocaleString()}
+                  {symbol}{coinInfo.market_data.current_price[currency.toLowerCase()]}
                 </h1>
               ) : null}
             </div>
@@ -153,20 +153,20 @@ const CoinInfo = () => {
           <div className="stats">
           <div className="left-stats">
             <div className="row">
-              <h4>24 Hour Low</h4>
-              {coinInfo.market_data?.low_24h ? <p>{symbol}{coinInfo.market_data.low_24h.usd.toLocaleString()}</p> : null}
+              <h4>24 Hour Low</h4> 
+              {coinInfo.market_data?.low_24h ? <p>{symbol}{coinInfo.market_data.low_24h[currency.toLowerCase()]}</p> : null}
 
             </div>
              <div className="row">
               <h4>24 Hour Hight</h4>
-              {coinInfo.market_data?.high_24h ? <p>{symbol}{coinInfo.market_data.high_24h.usd.toLocaleString()}</p> : null}                            
+              {coinInfo.market_data?.high_24h ? <p>{symbol}{coinInfo.market_data.high_24h[currency.toLowerCase()]}</p> : null}                            
 
             </div>
               </div>
                <div className="right-stats">
             <div className="row">
               <h4>Market Cap</h4>
-              {coinInfo.market_data?.market_cap ? <p>{symbol}{numberWithCommas(coinInfo.market_data.market_cap.usd.toLocaleString())}M</p> : null}
+              {coinInfo.market_data?.market_cap ? <p>{symbol}{numberWithCommas(coinInfo.market_data.market_cap[currency.toLowerCase()])}M</p> : null}
  
             </div>
              <div className="row">

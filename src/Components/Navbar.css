@@ -20,3 +20,25 @@
 .purple{
     color: #6900ff;
 }
+.select-currency{
+    width: 76px;
+    height: 37px;
+    padding: 7px;
+    font-size: 15px;
+    background-color: #505050;
+    color: white;
+    border: 1px solid white;
+}
+.select-currency option{
+    width: auto;
+    overflow: hidden;
+    box-sizing: border-box;
+    min-height: 48px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    padding-top: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.00938em;
+    padding-bottom: 6px;
+}

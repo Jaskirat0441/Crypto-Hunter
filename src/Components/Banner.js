@@ -1,4 +1,5 @@
 import React from 'react'
+import Alert from './Alert'
 import "./Banner.css"
 const Banner = () => {
   return (
@@ -10,8 +11,7 @@ const Banner = () => {
         <div className="banner-desc">
         Get All The Info Regarding Your Favorite Crypto Currency
         </div>
-        </div>
-        
+        </div>     
     </div>
   )
 }
