@@ -9,12 +9,13 @@ import { CryptoState } from "../Context/CryptoContext";
 const CoinInfo = () => {
   const [coinInfo, setCoinInfo] = useState({});
   const [loading, setLoading] = useState(false);
-  const{currency,symbol}= CryptoState();
+  const{currency,symbol,user,watchlist,setWatchlist}= CryptoState();
 
 
-  const params = useParams();
+  // const params = useParams();
 
   const url = `https://api.coingecko.com/api/v3/coins/${params.coinId}`;
+  const{id}= useParams();
 
   useEffect(() => {
     axios
@@ -32,6 +33,20 @@ const CoinInfo = () => {
 
       });
   }, []);
+  const addToWatchlist=async()=>{
+    const coinRef = doc(db,"watchlist",user.uid);
+  
+    try {
+      await setDoc(coinRef,{
+        coins:watchlist?[...watchlist,coin?.id]:[coin?.id],
+      });
+    } catch (err) {
+      
+    };
+  
+  
+  
+  }
 
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -45,6 +60,9 @@ const CoinInfo = () => {
       <div className="coin-container">
         <div className="content">
           <h1>{coinInfo.name}</h1>
+          {user &&
+          <button className="btn btn-primary">Add To Watchlist</button>
+        }
         </div>
         <div className="content">
           <div className="rank">

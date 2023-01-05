@@ -1,5 +1,8 @@
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import React,{useState} from 'react'
 import { CryptoState } from '../../Context/CryptoContext';
+import { auth } from '../../firebase';
 import Alert from '../Alert';
 
 const LoginModal = () => {
@@ -13,18 +16,45 @@ const LoginModal = () => {
   //   func(e.target.value);
   //     //  setPassword(e.target.value);
   // }
-  const handleLogin = ()=>{
+  const handleLogin = async ()=>{
     // console.log("first")
-    const handleSignup= async()=>{
+    // const handleSignup= async()=>{
       if(!password || !email){
           setAlert({
             open:true,
             message:"Password don't match",
             type:'danger'
           })
+          return;
       }
-  }
+      try {
+        const res= await signInWithEmailAndPassword(auth,email,password);
+        setAlert({
+          open:true,
+          message:"Login successful",
+          type:'success'
+        })
+
+      } catch (err) {
+        setAlert({
+          open:true,
+          message:err.message,
+          type:'danger'
+        })
+        return;
+      }
+
+  // }
 }
+  const {user}= CryptoState();
+const googleProvider= new GoogleAuthProvider();
+const signInWithGoogle =()=>{
+  signInWithPopup(auth,googleProvider).then(res =>{
+
+  })
+}
+
+
   return (
     <>
     <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">

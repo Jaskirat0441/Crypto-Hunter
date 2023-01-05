@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../Context/CryptoContext";
 import LoginModal from "./Authentication/LoginModal";
 import SignupModal from "./Authentication/SignupModal";
+import UserSidebar from "./Authentication/UserSidebar";
 import "./Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
-   const{currency,setCurrency} = CryptoState();
+   const{currency,setCurrency,user} = CryptoState();
   return (
     <>
     <div className="navbar">
@@ -24,8 +25,12 @@ const Navbar = () => {
         <option value="USD">USD</option>
         <option value="INR">INR</option>
       </select>
+      {user ? <UserSidebar/> :
+      <>
       <LoginModal/>
       <SignupModal/>
+      </>
+  }
       </div>
     {/* </div> */}
     </>
