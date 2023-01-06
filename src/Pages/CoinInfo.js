@@ -4,18 +4,23 @@ import { useParams } from "react-router-dom";
 import "./CoinInfo.css";
 import DOMPurify from 'dompurify'
 import { CryptoState } from "../Context/CryptoContext";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
+// import { db } from "../firebase";
 
 
 const CoinInfo = () => {
   const [coinInfo, setCoinInfo] = useState({});
   const [loading, setLoading] = useState(false);
-  const{currency,symbol,user,watchlist,setWatchlist}= CryptoState();
+  const{currency,symbol,user,watchlist,setWatchlist,setAlert,alertVisible}= CryptoState();
+  const [coin, setCoin] = useState();
 
 
-  // const params = useParams();
+
+  const params = useParams();
+  const{id}= useParams();
 
   const url = `https://api.coingecko.com/api/v3/coins/${params.coinId}`;
-  const{id}= useParams();
 
   useEffect(() => {
     axios
@@ -33,22 +38,68 @@ const CoinInfo = () => {
 
       });
   }, []);
-  const addToWatchlist=async()=>{
+
+  const inWatchlist = watchlist.includes(coinInfo?.id);
+
+  
+  const addToWatchlist = async () => {
+    console.log("first")
+    const coinRef = doc(db, "watchlist", user.uid);
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist ? [...watchlist, coinInfo?.id] : [coinInfo?.id] },
+        // { merge: true }
+      );
+      console.log("add")
+
+      setAlert({
+        open: true,
+        message: `${coinInfo.name} Added to the Watchlist !`,
+        type: "success",
+      });
+      alertVisible();
+    } catch (err) {
+      setAlert({
+        open: true,
+        message: err.message,
+        type: "error",
+      });
+      alertVisible();
+      console.log(err.message);
+    }
+  };
+
+  const removeFromWatchlist =async()=>{
     const coinRef = doc(db,"watchlist",user.uid);
   
+    
     try {
       await setDoc(coinRef,{
-        coins:watchlist?[...watchlist,coin?.id]:[coin?.id],
-      });
+        // coins:watchlist?[...watchlist,coin?.id]:[coin?.id]},
+        coins :watchlist.filter((watch)=>watch !==coinInfo?.id),},
+       {merge:'true'}
+      );
+      console.log("watchlist added");
+
+      setAlert({
+        open:true,
+        message:`${coinInfo.name} Remove From  Watchlist !`,
+        type:"success",
+      })
+      alertVisible();
     } catch (err) {
-      
+      setAlert({
+        open:true,
+        message:err.message,
+        type:"danger",
+      })
+      alertVisible();
+      console.log(err.message)
     };
-  
-  
-  
   }
 
-  function numberWithCommas(x) {
+  const numberWithCommas=(x)=>  {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
@@ -61,7 +112,11 @@ const CoinInfo = () => {
         <div className="content">
           <h1>{coinInfo.name}</h1>
           {user &&
-          <button className="btn btn-primary">Add To Watchlist</button>
+          <button className="btn "  style={{
+            width: "100%",
+            height: 40,
+            backgroundColor: inWatchlist ? "#ff0000" : "#6900ff",
+          }} onClick={inWatchlist ? (()=> removeFromWatchlist()): (()=> addToWatchlist())}>{inWatchlist ? "Remove from Watchlist" :"Add To Watchlist"}</button>
         }
         </div>
         <div className="content">

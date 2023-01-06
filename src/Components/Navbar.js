@@ -20,19 +20,23 @@ const Navbar = () => {
           Crypto <span className="purple">Hunter</span>
         </h1>
       </div>
-      {/* <div> */}
+      <div className="navbar-currency">
       <select  className="select-currency" value={currency} onChange={(e) => setCurrency(e.target.value)}>
         <option value="USD">USD</option>
         <option value="INR">INR</option>
       </select>
-      {user ? <UserSidebar/> :
+      <div className="navbar-signup">
+      { !user ?  
       <>
       <LoginModal/>
       <SignupModal/>
       </>
-  }
+      :
+      <UserSidebar/>
+    }
+    </div>
       </div>
-    {/* </div> */}
+    </div>
     </>
   );
 };

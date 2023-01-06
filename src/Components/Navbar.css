@@ -42,3 +42,19 @@
     letter-spacing: 0.00938em;
     padding-bottom: 6px;
 }
+.navbar-currency{
+    display: flex;
+    gap: 77px;
+    align-items: center;
+}
+.navbar-signup{
+    display: flex;
+    gap: 12px;
+}
+.alert_show{
+    width: 50%;
+    cursor: pointer;
+    margin: 0 auto;
+    z-index: 9999999;
+    text-align: center;
+}
